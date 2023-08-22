@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 const number = [1, 2, 3, 4, 5, 6];
@@ -22,30 +22,24 @@ function App() {
   };
 
   const rollDice = () => {
-    const randomIndex = Math.floor(Math.random() * number.length);
-    const rolledValue = number[randomIndex];
-    setRolledNumber(rolledValue);
-    setLimit(limit + 1);
-  };
+    if (limit < maxLimit) {
+      const randomIndex = Math.floor(Math.random() * number.length);
+      const rolledValue = number[randomIndex];
+      setRolledNumber(rolledValue);
+      setLimit(limit + 1);
 
-  const checkWinning = () => {
-    if (chosenNumber === rolledNumber) {
-      setStatus("You Guessed right✅");
-      setWins(wins + 1);
-    } else {
-      setStatus("You are wrong ❌");
-      // setRolledNumber(null);
-      setChosenNumber(null);
-      setLoss(loss + 1);
-      setMsg("Choose again !🫤");
+      // Call checkWinning after setting rolledNumber
+      if (chosenNumber === rolledValue) {
+        setStatus("You Guessed right✅");
+        setWins(wins + 1);
+      } else {
+        setStatus("You are wrong ❌");
+        setChosenNumber(null);
+        setLoss(loss + 1);
+        setMsg("Choose again !🫤");
+      }
     }
   };
-
-  useEffect(() => {
-    if (rolledNumber !== null) {
-      checkWinning();
-    }
-  }, [rolledNumber]);
 
   const resetAll = () => {
     setChosenNumber(null);
@@ -55,7 +49,6 @@ function App() {
     setWins(0);
     setSelectedNumber(null);
     setStatus(null);
-    // set
   };
 
   return (
