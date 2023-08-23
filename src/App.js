@@ -13,6 +13,7 @@ function App() {
   const [loss, setLoss] = useState(0);
   const [selectedNumber, setSelectedNumber] = useState(null);
   const [limit, setLimit] = useState(0);
+  const [isRolling, setIsRolling] = useState(false);
 
   const getChosenNumber = (event, num) => {
     const selectedNumber = parseInt(event.target.textContent);
@@ -22,22 +23,27 @@ function App() {
   };
 
   const rollDice = () => {
-    if (limit < maxLimit) {
-      const randomIndex = Math.floor(Math.random() * number.length);
-      const rolledValue = number[randomIndex];
-      setRolledNumber(rolledValue);
-      setLimit(limit + 1);
+    if (limit < maxLimit && !isRolling) {
+      setIsRolling(true); // Start rolling animation
 
-      // Call checkWinning after setting rolledNumber
-      if (chosenNumber === rolledValue) {
-        setStatus("You Guessed right✅");
-        setWins(wins + 1);
-      } else {
-        setStatus("You are wrong ❌");
-        setChosenNumber(null);
-        setLoss(loss + 1);
-        setMsg("Choose again !🫤");
-      }
+      setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * number.length);
+        const rolledValue = number[randomIndex];
+        setRolledNumber(rolledValue);
+        setLimit(limit + 1);
+        setIsRolling(false); // Reset rolling animation
+
+        // Call checkWinning after setting rolledNumber
+        if (chosenNumber === rolledValue) {
+          setStatus("You Guessed right✅");
+          setWins(wins + 1);
+        } else {
+          setStatus("You are wrong ❌");
+          setChosenNumber(null);
+          setLoss(loss + 1);
+          setMsg("Choose again !🫤");
+        }
+      }, 1000); // Adjust the duration as needed
     }
   };
 
@@ -80,13 +86,13 @@ function App() {
             </div>
             <p>Total tries left: {maxLimit - limit}</p>
             {chosenNumber !== null && <h3>You have chosen: {chosenNumber}</h3>}
-            <h2>{msg}</h2>
+            <h2 className="msg">{msg}</h2>
           </div>
         </div>
 
         <div className="right">
           <div className="App">
-            <div className="Container">
+            <div className={`Container ${isRolling ? "rolling" : ""}`}>
               <span className="text">
                 {rolledNumber !== null ? rolledNumber : "Start"}
               </span>
