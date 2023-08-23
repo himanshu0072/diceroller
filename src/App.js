@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import RollAudio from "./dice.mp3";
 
 const number = [1, 2, 3, 4, 5, 6];
 
@@ -22,9 +23,15 @@ function App() {
     setSelectedNumber(num);
   };
 
+  const playSound = (sound) => {
+    new Audio(sound).play();
+  };
+
   const rollDice = () => {
     if (limit < maxLimit && !isRolling) {
       setIsRolling(true); // Start rolling animation
+
+      playSound(RollAudio);
 
       setTimeout(() => {
         const randomIndex = Math.floor(Math.random() * number.length);
@@ -38,7 +45,7 @@ function App() {
           setStatus("You Guessed right✅");
           setWins(wins + 1);
         } else {
-          setStatus("You are wrong ❌");
+          setStatus("You Guessed wrong ❌");
           setChosenNumber(null);
           setLoss(loss + 1);
           setMsg("Choose again !🫤");
@@ -68,6 +75,9 @@ function App() {
           <span className="loss">Loss = {loss}</span>
         </h2>
       </div>
+      <div id="retry">
+        {limit >= maxLimit && <button onClick={resetAll}>Replay 🔁</button>}
+      </div>
       <div className="main">
         <div className="left">
           <div className="details">
@@ -85,7 +95,7 @@ function App() {
               ))}
             </div>
             <p>Total tries left: {maxLimit - limit}</p>
-            {chosenNumber !== null && <h3>You have chosen: {chosenNumber}</h3>}
+            {chosenNumber !== null && <h2>You have chosen: {chosenNumber}</h2>}
             <h2 className="msg">{msg}</h2>
           </div>
         </div>
@@ -94,7 +104,7 @@ function App() {
           <div className="App">
             <div className={`Container ${isRolling ? "rolling" : ""}`}>
               <span className="text">
-                {rolledNumber !== null ? rolledNumber : "Start"}
+                {rolledNumber !== null ? rolledNumber : "Dice"}
               </span>
             </div>
           </div>
@@ -110,9 +120,6 @@ function App() {
       </div>
       <div>
         <h1 className="result">{status}</h1>
-        <div id="retry">
-          {limit >= maxLimit && <button onClick={resetAll}>Replay 🔁</button>}
-        </div>
       </div>
       <div className="owner">
         {" "}
