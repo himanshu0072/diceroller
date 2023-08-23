@@ -122,8 +122,7 @@ function App() {
         <h1 className="result">{status}</h1>
       </div>
       <div className="owner">
-        {" "}
-        Powered by -{" "}
+        <p>Powered by - </p>
         <a
           href="https://connectit000.000webhostapp.com/himanshu/"
           target="_blank"
