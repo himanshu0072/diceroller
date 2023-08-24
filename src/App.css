@@ -54,7 +54,7 @@ body{
 }
 #retry button{
   font-size: 24px;
-  background-color: green;
+  background-color: rgb(231, 57, 57);
   color: #ffff;
   border-radius: 5px;
   width: 200px;
